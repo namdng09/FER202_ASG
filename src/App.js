@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Homepage from "./components/Homepage/Homepage";
 import LoginEbay from "./modules/auth/LoginEbay";
 import Register from "./modules/auth/Register"
+import ViewDetail from "./components/Homepage/ViewDetail";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route>
           <Route path="/" element={<Homepage />} />
+          <Route path="/detail/:id" element={<ViewDetail />} />
           <Route path="/login" element={<LoginEbay />} />
           <Route path="/register" element={<Register />} />
         </Route>

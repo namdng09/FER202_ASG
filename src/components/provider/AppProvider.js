@@ -36,6 +36,10 @@ function AppProvider({ children }) {
     return matchesSearchTerm
   });
 
+  const getProductById = (id) => {
+    return products.find((product) => product.id === id);
+  }
+
 
   return (
     <AppContext.Provider value={{
@@ -50,7 +54,8 @@ function AppProvider({ children }) {
       searchTerm,
       setSearchTerm,
       card,
-      setCard
+      setCard,
+      getProductById
     }}>
       {children}
       {/* app  */}
