@@ -1,0 +1,53 @@
+
+/* homepage .category-item */
+.category-item img {
+  border: 2px solid #ddd; /* Add a border around the image */
+  padding: 5px;
+  transition: transform 0.3s ease;
+}
+
+.category-item img:hover {
+  transform: scale(1.1); /* Zoom effect on hover */
+}
+
+.category-item p {
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* footer  */
+.footer {
+  background-color: #f8f9fa;
+}
+
+.footer h6 {
+  margin-bottom: 1rem;
+}
+
+.footer a {
+  color: #6c757d;
+  transition: color 0.3s;
+}
+
+.footer a:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+
+/* // register */
+form input {
+  border-radius: 20px;
+  padding: 10px;
+}
+
+form button {
+  font-weight: bold;
+}
+
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
