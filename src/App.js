@@ -5,6 +5,7 @@ import LoginEbay from "./modules/auth/LoginEbay";
 import Register from "./modules/auth/Register";
 import ViewDetail from "./components/Homepage/ViewDetail";
 import { Card } from "./components/Homepage/Card";
+import Wishlist from "./components/Homepage/WishList";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<LoginEbay />} />
           <Route path="/register" element={<Register />} />
           <Route path="/card" element={<Card />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Route>
       </Routes>
     </div>

@@ -9,8 +9,9 @@ import {
   Dropdown,
   DropdownButton,
 } from "react-bootstrap";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import AppContext from "../../components/provider/Context";
+import { Link } from 'react-router-dom';
 
 function EbayNav() {
   const { searchTerm, setSearchTerm } = useContext(AppContext);
@@ -67,6 +68,9 @@ function EbayNav() {
           </Form>
 
           <Nav className="ml-auto">
+            <Nav.Link href="/wishlist">
+              <FaHeart />
+            </Nav.Link>
             <Nav.Link href="#">
               <FaShoppingCart />
             </Nav.Link>
