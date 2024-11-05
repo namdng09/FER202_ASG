@@ -5,7 +5,7 @@ import AppContext from '../../components/provider/Context';
 import { Link } from 'react-router-dom';
 
 function EbayNav() {
-  const { searchTerm, setSearchTerm, category } = useContext(AppContext);
+  const { searchTerm, setSearchTerm, categories } = useContext(AppContext);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -66,7 +66,7 @@ function EbayNav() {
                   onChange={handleSearchChange}
                 />
                 <DropdownButton as={InputGroup.Append} variant="outline-secondary" title="All Categories">
-                  {category.map((category) => (
+                  {categories.map((category) => (
                     <Container>
                       <Row>
                         <Col md={3}>
