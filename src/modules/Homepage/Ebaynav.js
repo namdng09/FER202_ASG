@@ -1,7 +1,16 @@
-import React, { useContext } from 'react';
-import { Navbar, Nav, Form, FormControl, Button, InputGroup, Dropdown, DropdownButton } from 'react-bootstrap';
-import { FaShoppingCart } from 'react-icons/fa';
-import AppContext from '../../components/provider/Context';
+import React, { useContext } from "react";
+import {
+  Navbar,
+  Nav,
+  Form,
+  FormControl,
+  Button,
+  InputGroup,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
+import { FaShoppingCart } from "react-icons/fa";
+import AppContext from "../../components/provider/Context";
 
 function EbayNav() {
   const { searchTerm, setSearchTerm } = useContext(AppContext);
@@ -11,37 +20,48 @@ function EbayNav() {
   };
 
   return (
-    <div className='container-fluid'>
+    <div className="container-fluid">
       {/* Bottom Navbar with logo, search bar, and more */}
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#">
+        <Navbar.Brand href="/">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/800px-EBay_logo.svg.png"
             width="80"
             alt="eBay Logo"
           />
-          <span className="ml-2" style={{ fontSize: "11px" }}>Shop by category</span>
+          <span className="ml-2" style={{ fontSize: "11px" }}>
+            Shop by category
+          </span>
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           {/* Search Bar */}
-          <Form inline className="mx-auto w-75">
+          <Form inline={true.toString()} className="mx-auto w-75">
             <InputGroup className="w-100">
-              <FormControl 
-                type="text" 
-                style={{ borderRadius: "20px", height: "50px" }} 
-                placeholder="Search for anything" 
-                className="mr-sm-2" 
-                value={searchTerm} 
-                onChange={handleSearchChange} 
+              <FormControl
+                type="text"
+                style={{ borderRadius: "20px", height: "50px" }}
+                placeholder="Search for anything"
+                className="mr-sm-2"
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
-              <DropdownButton as={InputGroup.Append} variant="outline-secondary" title="All Categories">
+              <DropdownButton
+                as={InputGroup.Append}
+                variant="outline-secondary"
+                title="All Categories"
+              >
                 <Dropdown.Item href="#">Electronics</Dropdown.Item>
                 <Dropdown.Item href="#">Fashion</Dropdown.Item>
                 <Dropdown.Item href="#">Home & Garden</Dropdown.Item>
               </DropdownButton>
-              <Button variant="primary" style={{ borderRadius: "15px", width: "20%" }}>Search</Button>
+              <Button
+                variant="primary"
+                style={{ borderRadius: "15px", width: "20%" }}
+              >
+                Search
+              </Button>
             </InputGroup>
             {/* <Nav.Link href="#" className="ml-2">Advanced</Nav.Link> */}
           </Form>

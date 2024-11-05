@@ -8,11 +8,11 @@ import AppProvider from "./components/provider/AppProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+
     <BrowserRouter>
       <AppProvider>
         <App />
       </AppProvider>
     </BrowserRouter>
-  </React.StrictMode>
+
 );

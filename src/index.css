@@ -11,3 +11,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  /* Thêm khoảng cách giữa các mục giỏ hàng */
+}
+
+.cart-image {
+  width: 25%;
+  margin-right: 10px;
+  /* Khoảng cách giữa hình ảnh và tiêu đề */
+}
+
+.cart-title {
+  width: 25%;
+  font-weight: bold;
+  margin-right: 10px;
+  /* Khoảng cách giữa tiêu đề và số lượng */
+}
+
+.cart-count,
+.cart-price {
+  width: 25%;
+  text-align: center;
+  /* Căn giữa số lượng và giá */
+}

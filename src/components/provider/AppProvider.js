@@ -13,6 +13,7 @@ function AppProvider({ children }) {
   const [card, setCard] = useState([]);
 
 
+
   useEffect(() => {
 
     fetchData(page, limit);
@@ -41,6 +42,37 @@ function AppProvider({ children }) {
   }
 
 
+  const addEmployeeToCard = (product, quantity) => {
+    const existingMember = card.find(member => member.id === product.id);
+    if (existingMember) {
+      setCard(card.map(member => 
+        member.id === product.id ? { ...member, quantity: member.quantity + quantity } : member
+      ));
+    } else {
+      setCard([...card, { ...product, quantity }]);
+    }
+  };
+
+  const increaseQuantity = (id) => {
+    setCard(card.map(member => 
+      member.id === id ? { ...member, quantity: member.quantity + 1 } : member
+    ));
+  };
+
+  const decreaseQuantity = (id) => {
+    setCard(card.map(member => {
+      if (member.id === id) {
+        if (member.quantity > 1) {
+          return { ...member, quantity: member.quantity - 1 };
+        } else {
+          return null; // Đánh dấu để xóa
+        }
+      }
+      return member;
+    }).filter(member => member !== null));
+  };
+
+
   return (
     <AppContext.Provider value={{
       products: filteredProducts,
@@ -55,7 +87,10 @@ function AppProvider({ children }) {
       setSearchTerm,
       card,
       setCard,
-      getProductById
+      getProductById,
+      addEmployeeToCard,
+      increaseQuantity,
+      decreaseQuantity
     }}>
       {children}
       {/* app  */}
