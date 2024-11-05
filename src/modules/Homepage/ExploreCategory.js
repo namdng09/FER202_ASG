@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function PopularCategories() {
   const categories = [
@@ -19,13 +20,15 @@ function PopularCategories() {
         {categories.map((category, index) => (
           <Col key={index} xs={6} sm={4} md={3} lg={2} className="mb-4">
             <div className="category-item">
-              <img
-                src={category.imgSrc}
-                alt={category.name}
-                className="rounded-circle"
-                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-              />
-              <p className="mt-2">{category.name}</p>
+              <Link to={`/category/${category.name}`} style={{ textDecoration: 'none' }}>
+                <img
+                  src={category.imgSrc}
+                  alt={category.name}
+                  className="rounded-circle"
+                  style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                />
+                <p className="mt-2" style={{ fontSize: '14px', fontWeight: 'bold', color: 'black' }}>{category.name}</p>
+              </Link>
             </div>
           </Col>
         ))}

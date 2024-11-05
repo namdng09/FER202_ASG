@@ -18,7 +18,7 @@ function SignIn() {
           </div>
           <h3 className="text-center mb-3">Sign in to your account</h3>
           <p className="text-center">
-            New to eBay? <a href="#">Create account</a>
+            New to eBay? <a href="/register">Create account</a>
           </p>
           <Form>
             <Form.Group controlId="formEmail">

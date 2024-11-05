@@ -8,6 +8,7 @@ function AppProvider({ children }) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
   const [searchTerm, setSearchTerm] = useState("");
+  const [category, setCategory] = useState([]);
 
   const [brand, setBrand] = useState('');
   const [card, setCard] = useState([]);
@@ -23,6 +24,9 @@ function AppProvider({ children }) {
 
       const resProducts = await axios.get("http://localhost:9999/products/?_page=" + page + "&_limit=" + limit);
       setProducts(resProducts.data);
+
+      const resCategory = await axios.get("http://localhost:9999/categories");
+      setCategory(resCategory.data);
 
       const resMeta = await axios.get("http://localhost:9999/meta");
       setMeta(resMeta.data);
@@ -50,7 +54,11 @@ function AppProvider({ children }) {
       searchTerm,
       setSearchTerm,
       card,
-      setCard
+      setCard,
+      category,
+      setCategory,
+      brand,
+      setBrand
     }}>
       {children}
       {/* app  */}
