@@ -9,12 +9,29 @@ function AppProvider({ children }) {
   const [limit, setLimit] = useState(12);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [brand, setBrand] = useState('');
-  const [card, setCard] = useState([]);
+  const [brand, setBrand] = useState("");
+
+  const [card, setCard] = useState(() => {
+    try {
+      const savedCard = localStorage.getItem("card");
+      return savedCard ? JSON.parse(savedCard) : [];
+    } catch (error) {
+      console.error("Failed to parse saved card data from localStorage", error);
+      return [];
+    }
+  });
 
   const [wishlist, setWishlist] = useState(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    return savedWishlist ? JSON.parse(savedWishlist) : [];
+    try {
+      const savedWishlist = localStorage.getItem("wishlist");
+      return savedWishlist ? JSON.parse(savedWishlist) : [];
+    } catch (error) {
+      console.error(
+        "Failed to parse saved wishlist data from localStorage",
+        error
+      );
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -22,14 +39,18 @@ function AppProvider({ children }) {
   }, [wishlist]);
 
   useEffect(() => {
+    localStorage.setItem("card", JSON.stringify(card));
+  }, [card]);
 
+  useEffect(() => {
     fetchData(page, limit);
   }, [page, limit]);
 
   const fetchData = async (page, limit) => {
     try {
-
-      const resProducts = await axios.get("http://localhost:9999/products/?_page=" + page + "&_limit=" + limit);
+      const resProducts = await axios.get(
+        "http://localhost:9999/products/?_page=" + page + "&_limit=" + limit
+      );
       setProducts(resProducts.data);
 
       const resMeta = await axios.get("http://localhost:9999/meta");
@@ -40,53 +61,78 @@ function AppProvider({ children }) {
   };
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearchTerm = product.title.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesSearchTerm
+    const matchesSearchTerm = product.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return matchesSearchTerm;
   });
 
   const getProductById = (id) => {
     return products.find((product) => product.id === id);
-  }
-
-    const removeEmployeeFromCard = (id) => {
-    setCard(card.filter(member => member.id !== id));
   };
 
+  const handleDeleteAll = () => {
+    setCard([]); // Clears the entire cart
+    localStorage.removeItem("card"); // Optional: Clear localStorage
+  };
 
+  // In AppProvider.js or your context provider file
+  const removeItemFromCart = (itemId) => {
+    // Filter out the item with the matching ID
+    const updatedCart = card.filter((item) => item.id !== itemId);
+
+    // Update the state with the new cart
+    setCard(updatedCart);
+
+    // Save the updated cart to local storage
+    localStorage.setItem("card", JSON.stringify(updatedCart));
+  };
   const addEmployeeToCard = (product, quantity) => {
-    const existingMember = card.find(member => member.id === product.id);
+    const existingMember = card.find((member) => member.id === product.id);
     if (existingMember) {
-      setCard(card.map(member => 
-        member.id === product.id ? { ...member, quantity: member.quantity + quantity } : member
-      ));
+      setCard(
+        card.map((member) =>
+          member.id === product.id
+            ? { ...member, quantity: member.quantity + quantity }
+            : member
+        )
+      );
     } else {
       setCard([...card, { ...product, quantity }]);
     }
   };
 
   const increaseQuantity = (id) => {
-    setCard(card.map(member => 
-      member.id === id ? { ...member, quantity: member.quantity + 1 } : member
-    ));
+    setCard(
+      card.map((member) =>
+        member.id === id ? { ...member, quantity: member.quantity + 1 } : member
+      )
+    );
   };
 
   const updateQuantity = (id, quantity) => {
-    setCard(card.map(member => 
-      member.id === id ? { ...member, quantity } : member
-    ));
+    setCard(
+      card.map((member) =>
+        member.id === id ? { ...member, quantity } : member
+      )
+    );
   };
 
   const decreaseQuantity = (id) => {
-    setCard(card.map(member => {
-      if (member.id === id) {
-        if (member.quantity > 1) {
-          return { ...member, quantity: member.quantity - 1 };
-        } else {
-          return null; // Đánh dấu để xóa
-        }
-      }
-      return member;
-    }).filter(member => member !== null));
+    setCard(
+      card
+        .map((member) => {
+          if (member.id === id) {
+            if (member.quantity > 1) {
+              return { ...member, quantity: member.quantity - 1 };
+            } else {
+              return null; // Đánh dấu để xóa
+            }
+          }
+          return member;
+        })
+        .filter((member) => member !== null)
+    );
   };
 
   const addToWishlist = (product) => {
@@ -94,7 +140,9 @@ function AppProvider({ children }) {
   };
 
   const removeFromWishlist = (productId) => {
-    setWishlist((prevWishlist) => prevWishlist.filter((item) => item.id !== productId));
+    setWishlist((prevWishlist) =>
+      prevWishlist.filter((item) => item.id !== productId)
+    );
   };
 
   const toggleWishlist = (product) => {
@@ -108,29 +156,32 @@ function AppProvider({ children }) {
   };
 
   return (
-    <AppContext.Provider value={{
-      products: filteredProducts,
-      setProducts,
-      meta,
-      setMeta,
-      page,
-      setPage,
-      limit,
-      setLimit,
-      searchTerm,
-      setSearchTerm,
-      card,
-      setCard,
-      getProductById,
-      addEmployeeToCard,
-      increaseQuantity,
-      decreaseQuantity,
-      removeEmployeeFromCard,
-      updateQuantity,
-      wishlist,
-      toggleWishlist,
-      removeFromWishlist,
-    }}>
+    <AppContext.Provider
+      value={{
+        products: filteredProducts,
+        setProducts,
+        meta,
+        setMeta,
+        page,
+        setPage,
+        limit,
+        setLimit,
+        searchTerm,
+        setSearchTerm,
+        card,
+        setCard,
+        getProductById,
+        addEmployeeToCard,
+        increaseQuantity,
+        decreaseQuantity,
+        handleDeleteAll,
+        updateQuantity,
+        wishlist,
+        toggleWishlist,
+        removeFromWishlist,
+        removeItemFromCart
+      }}
+    >
       {children}
       {/* app  */}
     </AppContext.Provider>

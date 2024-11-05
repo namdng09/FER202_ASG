@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import AppContext from "../../components/provider/Context";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function EbayNav() {
   const { searchTerm, setSearchTerm } = useContext(AppContext);
@@ -24,7 +24,7 @@ function EbayNav() {
     <div className="container-fluid">
       {/* Bottom Navbar with logo, search bar, and more */}
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">
+        <Navbar.Brand as={Link} to="/" style={{ position: "relative" }}>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/800px-EBay_logo.svg.png"
             width="80"
@@ -68,10 +68,10 @@ function EbayNav() {
           </Form>
 
           <Nav className="ml-auto">
-            <Nav.Link href="/wishlist">
+            <Nav.Link as={Link} to="/wishlist" style={{ position: "relative" }}>
               <FaHeart />
             </Nav.Link>
-            <Nav.Link href="#">
+            <Nav.Link as={Link} to="/card" style={{ position: "relative" }}>
               <FaShoppingCart />
             </Nav.Link>
           </Nav>

@@ -31,42 +31,13 @@ function ViewDetail() {
     setHighResLoaded(true);
   };
 
-  useEffect(() => {
-    // Khởi tạo giá trị số lượng từ trạng thái team
-    const initialQuantities = {};
-    card.forEach((member) => {
-      initialQuantities[member.id] = member.quantity;
-    });
-    setQuantities(initialQuantities);
-  }, [card]);
 
   // const handleQuantityChange = (id, value) => {
   //   setQuantities({ ...quantities, [id]: parseInt(value, 10) });
   // };
 
   const handleAddToCart = () => {
-    const quantity = parseInt(quantities[id], 10) || 1;
-
-    // Retrieve current cart from local storage or initialize as an empty array
-    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Check if product already exists in cart
-    const existingProductIndex = existingCart.findIndex(
-      (item) => item.id === product.id
-    );
-
-    if (existingProductIndex > -1) {
-      // If product exists, update quantity
-      existingCart[existingProductIndex].quantity += quantity;
-    } else {
-      // If product does not exist, add new item with quantity
-      existingCart.push({ ...product, quantity });
-    }
-
-    // Save updated cart to local storage
-    localStorage.setItem("cart", JSON.stringify(existingCart));
-
-    // Optionally, update context or state if needed
+    const quantity = quantities[product.id] || 1;
     addEmployeeToCard(product, quantity);
   };
 
