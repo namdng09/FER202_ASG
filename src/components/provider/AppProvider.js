@@ -12,16 +12,23 @@ function AppProvider({ children }) {
   const [brand, setBrand] = useState('');
   const [card, setCard] = useState([]);
 
+  // Khang - create list category
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
+  
   useEffect(() => {
+    fetchData(page, limit, selectedCategory);
+    fetchCategories();
+  }, [page, limit, selectedCategory]);
 
-    fetchData(page, limit);
-  }, [page, limit]);
-
-  const fetchData = async (page, limit) => {
+  const fetchData = async (page, limit, selectedCategory) => {
     try {
-
-      const resProducts = await axios.get("http://localhost:9999/products/?_page=" + page + "&_limit=" + limit);
+      let url = "http://localhost:9999/products/?_page=" + page + "&_limit=" + limit;
+      if(selectedCategory){
+        url += "&category=" + selectedCategory;
+      }
+      const resProducts = await axios.get(url);
       setProducts(resProducts.data);
 
       const resMeta = await axios.get("http://localhost:9999/meta");
@@ -31,11 +38,26 @@ function AppProvider({ children }) {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:9999/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const filteredProducts = products.filter((product) => {
     const matchesSearchTerm = product.title.toLowerCase().includes(searchTerm.toLowerCase())
     return matchesSearchTerm
   });
 
+
+  // Khang - handle select category
+  const handleSelectCategory = (categoryId) =>{
+      setSelectedCategory(categoryId);
+      console.log(categoryId);
+  }
 
   return (
     <AppContext.Provider value={{
@@ -50,7 +72,8 @@ function AppProvider({ children }) {
       searchTerm,
       setSearchTerm,
       card,
-      setCard
+      setCard, categories,
+      handleSelectCategory
     }}>
       {children}
       {/* app  */}
