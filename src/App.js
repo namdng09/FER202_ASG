@@ -4,7 +4,7 @@ import Homepage from "./components/Homepage/Homepage";
 import LoginEbay from "./modules/auth/LoginEbay";
 import Register from "./modules/auth/Register";
 import ViewDetail from "./components/Homepage/ViewDetail";
-import { Cart } from "./components/Homepage/Cart";
+import { Card } from "./components/Homepage/Card";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/detail/:id" element={<ViewDetail />} />
           <Route path="/login" element={<LoginEbay />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/card" element={<Card />} />
         </Route>
       </Routes>
     </div>

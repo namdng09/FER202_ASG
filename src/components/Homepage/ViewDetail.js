@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AppContext from "../provider/Context";
 import {
@@ -19,48 +19,68 @@ import Footer from "../../modules/Homepage/Footer";
 function ViewDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { getProductById, card, setCard } = useContext(AppContext);
+  const { getProductById, card, addEmployeeToCard } = useContext(AppContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to check if high-res is loaded
+
+  const [quantities, setQuantities] = useState({});
 
   // Fetch product by ID
   const product = getProductById(parseInt(id));
 
-  // Display loading if product not found
-  if (!product) {
-    return <div>Loading...</div>;
-  }
   const handleHighResLoad = () => {
     setHighResLoaded(true);
   };
 
-  const handleAddToCart = () => {
-    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
-    const productExists = card.some((item) => item.id === product.id);
+  useEffect(() => {
+    // Khởi tạo giá trị số lượng từ trạng thái team
+    const initialQuantities = {};
+    card.forEach((member) => {
+      initialQuantities[member.id] = member.quantity;
+    });
+    setQuantities(initialQuantities);
+  }, [card]);
 
-    if (productExists) {
-      // Cập nhật giỏ hàng khi sản phẩm đã tồn tại
-      const updatedCart = card.map((item) => {
-        if (item.id === product.id) {
-          return { ...item, quantity: item.quantity + 1 }; // Tăng số lượng
-        }
-        return item;
-      });
-      setCard(updatedCart);
-      // setCount((prevCount) => prevCount + 1); // Cập nhật số lượng tổng
+  // const handleQuantityChange = (id, value) => {
+  //   setQuantities({ ...quantities, [id]: parseInt(value, 10) });
+  // };
+
+  const handleAddToCart = () => {
+    const quantity = parseInt(quantities[id], 10) || 1;
+
+    // Retrieve current cart from local storage or initialize as an empty array
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Check if product already exists in cart
+    const existingProductIndex = existingCart.findIndex(
+      (item) => item.id === product.id
+    );
+
+    if (existingProductIndex > -1) {
+      // If product exists, update quantity
+      existingCart[existingProductIndex].quantity += quantity;
     } else {
-      // const updatedCart = [...cart, { ...product, quantity: 1 }]; // Thêm sản phẩm mới với số lượng 1
-      // setCart(updatedCart);
-      // setCount((prevCount) => prevCount + 1); // Cập nhật số lượng tổng
-      // Lưu giỏ hàng vào Local Storage
-      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // If product does not exist, add new item with quantity
+      existingCart.push({ ...product, quantity });
     }
-    navigate("/cart");
+
+    // Save updated cart to local storage
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+
+    // Optionally, update context or state if needed
+    addEmployeeToCard(product, quantity);
   };
 
   const handleAddToWatchlist = () => {
     // Chuyển hướng đến đường link cho "Add to Watchlist"
     // Thay đổi đường dẫn này theo nhu cầu của bạn
   };
+
+  // Display loading if product not found
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(card);
 
   return (
     <div>

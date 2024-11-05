@@ -5,7 +5,7 @@ import ExploreCategory from "../../modules/Homepage/ExploreCategory";
 import Footer from "../../modules/Homepage/Footer";
 import MainTable from "./MainTable";
 import PaginationTab from "./PaginationTab";
-import { Cart } from "./Cart";
+
 
 
 function Homepage() {

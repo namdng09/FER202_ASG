@@ -41,6 +41,10 @@ function AppProvider({ children }) {
     return products.find((product) => product.id === id);
   }
 
+    const removeEmployeeFromCard = (id) => {
+    setCard(card.filter(member => member.id !== id));
+  };
+
 
   const addEmployeeToCard = (product, quantity) => {
     const existingMember = card.find(member => member.id === product.id);
@@ -56,6 +60,12 @@ function AppProvider({ children }) {
   const increaseQuantity = (id) => {
     setCard(card.map(member => 
       member.id === id ? { ...member, quantity: member.quantity + 1 } : member
+    ));
+  };
+
+  const updateQuantity = (id, quantity) => {
+    setCard(card.map(member => 
+      member.id === id ? { ...member, quantity } : member
     ));
   };
 
@@ -90,7 +100,9 @@ function AppProvider({ children }) {
       getProductById,
       addEmployeeToCard,
       increaseQuantity,
-      decreaseQuantity
+      decreaseQuantity,
+      removeEmployeeFromCard,
+      updateQuantity
     }}>
       {children}
       {/* app  */}

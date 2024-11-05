@@ -1,21 +1,25 @@
 import React, { useContext, useEffect } from "react";
 import AppContext from "../provider/Context";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col, Image, FormControl, Form } from "react-bootstrap";
 import EbayNav from "../../modules/Homepage/Ebaynav";
 
 export const Card = () => {
-  const { cart, setCart, setCount, count } = useContext(AppContext);
+  const {
+    card,
+    increaseQuantity,
+    decreaseQuantity,
+    removeEmployeeFromTeam,
+    updateQuantity,
+  } = useContext(AppContext);
 
-  useEffect(() => {
-    // Đọc giỏ hàng từ Local Storage khi ứng dụng khởi động
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-      setCount(JSON.parse(storedCart).length); // Cập nhật số lượng nếu cần
+  const handleQuantityChange = (id, value) => {
+    const quantity = parseInt(value, 10);
+    if (!isNaN(quantity) && quantity >= 0) {
+      updateQuantity(id, quantity);
     }
-  }, []);
+  };
 
-  console.log(count);
+  console.log(card);
 
   return (
     <Container>
@@ -23,8 +27,8 @@ export const Card = () => {
       <Row>
         <h3 className="mb-5">Shopping cart</h3>
         <Col md={8}>
-          {cart && cart.length > 0 ? (
-            cart.map((item, index) => (
+          {card && card.length > 0 ? (
+            card.map((item, index) => (
               <div className="cart-item" key={index}>
                 <Image
                   className="cart-image"
@@ -33,7 +37,17 @@ export const Card = () => {
                   alt="Cart Item"
                 />
                 <div className="cart-title">{item.title}</div>
-                <div className="cart-count">Quantity: {item.quantity}</div>
+                {/* <div className="cart-count">Quantity: {item.quantity}</div> */}
+                <div>
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(item.id, e.target.value)
+                    }
+                  />
+                </div>
                 <div className="cart-price">US ${item.price}</div>
               </div>
             ))
