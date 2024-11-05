@@ -19,7 +19,7 @@ import Footer from "../../modules/Homepage/Footer";
 function ViewDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { getProductById, card, setCard } = useContext(AppContext);
+  const { getProductById, card, setCard, toggleWishlist, wishlist } = useContext(AppContext);
   const [isHighResLoaded, setHighResLoaded] = useState(false); // State to check if high-res is loaded
 
   // Fetch product by ID
@@ -58,8 +58,7 @@ function ViewDetail() {
   };
 
   const handleAddToWatchlist = () => {
-    // Chuyển hướng đến đường link cho "Add to Watchlist"
-    // Thay đổi đường dẫn này theo nhu cầu của bạn
+    toggleWishlist(product);
   };
 
   return (
@@ -115,12 +114,12 @@ function ViewDetail() {
               <Row>
                 <Col>
                   <Button
-                    variant="outline-primary"
+                    variant={wishlist.some((item) => item.id === product.id) ? "danger" : "outline-primary"}
                     className="w-100 rounded-pill btn-lg"
                     onClick={handleAddToWatchlist}
                   >
                     <FaEye className="me-2" />
-                    Add to Watchlist
+                    {wishlist.some((item) => item.id === product.id) ? "Remove from Watchlist" : "Add to Watchlist"}
                   </Button>
                 </Col>
               </Row>

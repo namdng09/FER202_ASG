@@ -12,7 +12,14 @@ function AppProvider({ children }) {
   const [brand, setBrand] = useState('');
   const [card, setCard] = useState([]);
 
+  const [wishlist, setWishlist] = useState(() => {
+    const savedWishlist = localStorage.getItem("wishlist");
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
 
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
 
   useEffect(() => {
 
@@ -72,6 +79,23 @@ function AppProvider({ children }) {
     }).filter(member => member !== null));
   };
 
+  const addToWishlist = (product) => {
+    setWishlist((prevWishlist) => [...prevWishlist, product]);
+  };
+
+  const removeFromWishlist = (productId) => {
+    setWishlist((prevWishlist) => prevWishlist.filter((item) => item.id !== productId));
+  };
+
+  const toggleWishlist = (product) => {
+    if (wishlist.some((item) => item.id === product.id)) {
+      removeFromWishlist(product.id);
+      alert(`${product.title} has been removed from your wishlist!`);
+    } else {
+      addToWishlist(product);
+      alert(`${product.title} has been added to your wishlist!`);
+    }
+  };
 
   return (
     <AppContext.Provider value={{
@@ -90,7 +114,10 @@ function AppProvider({ children }) {
       getProductById,
       addEmployeeToCard,
       increaseQuantity,
-      decreaseQuantity
+      decreaseQuantity,
+      wishlist,
+      toggleWishlist,
+      removeFromWishlist,
     }}>
       {children}
       {/* app  */}
