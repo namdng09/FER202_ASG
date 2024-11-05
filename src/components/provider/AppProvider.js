@@ -19,7 +19,6 @@ function AppProvider({ children }) {
   
   useEffect(() => {
     fetchData(page, limit, selectedCategory);
-    fetchCategories();
   }, [page, limit, selectedCategory]);
 
   const fetchData = async (page, limit, selectedCategory) => {
@@ -31,21 +30,15 @@ function AppProvider({ children }) {
       const resProducts = await axios.get(url);
       setProducts(resProducts.data);
 
+      const resCategory = await axios.get("http://localhost:9999/categories");
+      setCategories(resCategory.data);
+
       const resMeta = await axios.get("http://localhost:9999/meta");
       setMeta(resMeta.data);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get('http://localhost:9999/categories');
-      setCategories(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const filteredProducts = products.filter((product) => {
     const matchesSearchTerm = product.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -73,7 +66,11 @@ function AppProvider({ children }) {
       setSearchTerm,
       card,
       setCard, categories,
-      handleSelectCategory
+      handleSelectCategory,
+      setCard,
+      setCategories,
+      brand,
+      setBrand
     }}>
       {children}
       {/* app  */}
