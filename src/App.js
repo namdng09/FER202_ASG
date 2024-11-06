@@ -6,6 +6,7 @@ import Register from "./modules/auth/Register";
 import ViewDetail from "./components/Homepage/ViewDetail";
 import { Card } from "./components/Homepage/Card";
 import Wishlist from "./components/Homepage/WishList";
+import Detail from "./components/Homepage/Detail";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         <Route>
           <Route path="/" element={<Homepage />} />
-          <Route path="/detail/:id" element={<ViewDetail />} />
+          <Route path="/detail/:id" element={<Detail />} />
           <Route path="/login" element={<LoginEbay />} />
           <Route path="/register" element={<Register />} />
           <Route path="/card" element={<Card />} />

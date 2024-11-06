@@ -53,6 +53,9 @@ function AppProvider({ children }) {
   useEffect(() => {
     fetchData(page, limit);
   }, [page, limit]);
+  useEffect(() => {
+    fetchData(1, limit, selectedCategory);
+  }, [selectedCategory]);
 
   const fetchData = async (page, limit, selectedCategory) => {
     try {
@@ -61,6 +64,7 @@ function AppProvider({ children }) {
         url += "&category=" + selectedCategory;
       }
       const resProducts = await axios.get(url);
+      setProducts(resProducts.data);
 
       const resCategory = await axios.get("http://localhost:9999/categories");
       setCategories(resCategory.data);

@@ -70,20 +70,40 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AppContext from '../provider/Context';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaShoppingCart, FaEye } from 'react-icons/fa';
 import Ebaynav from './../../modules/Homepage/Ebaynav';
 
 function ProductDetail() {
+    const { getProductById, card, toggleWishlist, wishlist, addEmployeeToCard } = useContext(AppContext);
     const { id } = useParams();
-    const { products } = useContext(AppContext);
-    const product = products.find((item) => item.id === parseInt(id));
     const [mainImage, setMainImage] = useState(null);
+
+    const [quantities, setQuantities] = useState({});
+
+    // Fetch product by ID
+    const product = getProductById(parseInt(id));
 
     useEffect(() => {
         if (product) {
             setMainImage(product.thumbnail);
         }
     }, [product]);
+
+    const handleAddToCart = () => {
+        const quantity = quantities[product.id] || 1;
+        addEmployeeToCard(product, quantity);
+    };
+
+    const handleAddToWatchlist = () => {
+        toggleWishlist(product);
+    };
+
+    // Display loading if product not found
+    if (!product) {
+        return <div>Loading...</div>;
+    }
+
+    console.log(card);
 
     if (!product) {
         return <p>Product not found</p>;
@@ -165,19 +185,20 @@ function ProductDetail() {
                         <h2>{product.title}</h2>
                         <h3>US ${usPrice}/ea</h3>
                         <p style={{ fontSize: '14px', color: '#555' }}>Approximately {vndPrice} VND</p>
-                        <p style={{ color: '#d9534f' }}>{product.availabilityStatus} ({product.stock})</p>
+                        <p style={{ color: '#d9534f', fontWeight: 'bold' }}>Status: {product.availabilityStatus} ({product.stock})</p>
                         <p>Brand: <strong>{product.brand}</strong></p>
                         <p style={{ fontSize: '16px', marginTop: '10px' }}>"{product.description}"</p>
                         <p style={{ fontSize: '16px' }}>
-                            Quantity: <input type='number' min="1" max={product.stock} defaultValue="1" />
                             {product.stock >= 10 ? ' More than 10 available' : ''}
                             {product.stock === 1 ? ' Last one' : ''}
                         </p>
 
                         {/* Buttons */}
                         <Button variant="primary" style={{ width: '100%', marginTop: '10px' }}>Buy It Now</Button>
-                        <Button variant="outline-primary" style={{ width: '100%', marginTop: '10px' }}>Add to cart</Button>
-                        <Button variant="outline-secondary" style={{ width: '100%', marginTop: '10px' }}>Add to watchlist</Button>
+                        <Button variant="outline-primary" onClick={handleAddToCart} style={{ width: '100%', marginTop: '10px' }}>Add to cart</Button>
+                        <Button variant={wishlist.some((item) => item.id === product.id) ? "danger" : "outline-primary"} onClick={handleAddToWatchlist} style={{ width: '100%', marginTop: '10px' }}>
+                            {wishlist.some((item) => item.id === product.id) ? "Remove from Watchlist" : "Add to Watchlist"}
+                        </Button>
                     </Col>
                 </Row>
                 <Row>

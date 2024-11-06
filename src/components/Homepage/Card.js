@@ -20,7 +20,7 @@ export const Card = () => {
 
   // Calculate the total price
   const totalPrice = card.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => (total + (Math.round((item.price - (item.price * item.discountPercentage / 100)) * 100) / 100) * item.quantity),
     0
   );
 
@@ -61,7 +61,7 @@ export const Card = () => {
                 <div className="cart-item" key={index}>
                   <Image
                     className="cart-image"
-                    src={item.images}
+                    src={item.thumbnail}
                     fluid
                     alt="Cart Item"
                   />
@@ -81,7 +81,7 @@ export const Card = () => {
                   </div>
                   <div className="cart-price d-flex align-items-center justify-content-center">
                     <h3>
-                      <strong>US ${item.price * item.quantity}</strong>
+                      <strong>US ${(Math.round((item.price - (item.price * item.discountPercentage / 100)) * 100) / 100)}</strong>
                     </h3>
                   </div>
                   <div className="cart-remove d-flex align-items-center justify-content-center">
